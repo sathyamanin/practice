@@ -46,3 +46,5 @@ Check version of container image
 ```sh
 kubectl describe deployment.apps/kyverno -n kaas-policy
 ```
+### 6. Manin website link
+[Website link](https://maninorg.com/manin/)
