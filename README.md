@@ -14,8 +14,8 @@ Run [Bump dependencies kaas-policy](https://core.cloudbees.ais.acquia.io/cloudat
 
 ### 2. [Cut a tag](https://github.com/acquia/kaas-policy/releases/new) 
 
-### 3. Set targetRevision 
-Run [Bump versions kaas-policy](https://core.cloudbees.ais.acquia.io/cloudatlas-jenkins/view/ORCH%20Releases/job/Bump%20version%20kaas-policy/) jenkins job. It will create PR setting version for variant to the tag in [.acquia/platform.yaml](.acquia/platform.yaml)
+### 3. Set targetRevision in `platform.yaml` 
+Run [Bump versions kaas-policy](https://core.cloudbees.ais.acquia.io/cloudatlas-jenkins/view/ORCH%20Releases/job/Bump%20version%20kaas-policy/) jenkins job. It will create PR setting version for variant to the tag in [.platform.yaml](.platform.yaml)
 
 ### 4. Deploy with acd and sync children
 
