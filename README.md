@@ -2,22 +2,27 @@
 
 ## Release Cadence
 
-Every Tuesday a new release of kaas-policy will be deployed to development and production.
+kaas-external-secrets is released on a weekly basis by the Orch team, every Tuesday.
 
-This is based on the assumption that the only changes present in the release is configuration changes and the release can be considered a standard release. If argoCD itself is being upgraded there is a possibility that the deployment to production will occur later than Tuesday.
+The release will contain any upstream updates, which are compatible with our EKS version along with rebuilt images.
 
-No on demand releases of kaas-policy will be done to either dev or prod, unless it is in response to pageable incident.
+These releases go through the normal CCB process.
+
 
 ## Release process
 ### 1. Update tags
-Run [Bump dependencies kaas-policy](https://core.cloudbees.ais.acquia.io/cloudatlas-jenkins/view/ORCH%20Releases/job/Bump%20dependencies%20kaas-policy/) jenkins job. It will create PR. Wait for CI to run and then merge
+Run
 
-### 2. [Cut a tag](https://github.com/acquia/kaas-policy/releases/new) 
+```sh
+make update-tags
+```
 
-### 3. Set targetRevision in `platform.yaml` 
-Run [Bump versions kaas-policy](https://core.cloudbees.ais.acquia.io/cloudatlas-jenkins/view/ORCH%20Releases/job/Bump%20version%20kaas-policy/) jenkins job. It will create PR setting version for variant to the tag in [.platform.yaml](.platform.yaml)
+What for CI to run and then merge
 
-### 4. Deploy with acd and sync children
+### 2. [Cut a tag](https://github.com/acquia/kaas-external-secrets/releases/new) and set `targetRevision` for variants to it in
+[.acquia/platform.yaml](.acquia/platform.yaml)
+
+### 3. Deploy with acd and sync children
 
 ```sh
 acd deploy --variant dev --check-health --timeout 15
@@ -35,16 +40,19 @@ acd deploy --variant staging --check-health --timeout 15
 acd deploy --variant prod --check-health --timeout 15
 ```
 
-### 5. Verify release
+## 4. Verify release
+Check [Dashboards](https://service.sumologic.com/ui/#/library/folder/28283158)
 
-Make sure kyverno, kyverno-cleanup-controller pods are running
+[acd-dev]: https://argocd.dev.cloudservices.acquia.io/applications/kaas-external-secrets-dev
+[acd-staging]: https://argocd.cloudservices.acquia.io/applications/kaas-external-secrets-staging
+[acd-prod]: https://argocd.cloudservices.acquia.io/applications/kaas-external-secrets-prod
+
+Make sure external-secrets, external-secrets-cert-controller, external-secrets-webhook pods are running
 ```sh
-kubectl get all -n kaas-policy
+k get all -n external-secret
 ```
 
 Check version of container image
 ```sh
-kubectl describe deployment.apps/kyverno -n kaas-policy
+k describe deployment.apps/external-secret -n external-secret
 ```
-### 6. Manin website link
-[Website link](https://maninorg.com/manin/)
